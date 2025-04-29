@@ -32,6 +32,7 @@ return {
         "<leader>ot",
         ":OverseerToggle<CR>",
       },
+      { "<leader>or", ":OverseerRun<CR>" },
       -- Top Pickers & Explorer
       {
         "<leader><space>",
