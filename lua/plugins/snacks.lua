@@ -27,6 +27,11 @@ return {
       },
     },
     keys = {
+      -- Overseer
+      {
+        "<leader>ot",
+        ":OverseerToogle<CR>",
+      },
       -- Top Pickers & Explorer
       {
         "<leader><space>",
