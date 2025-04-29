@@ -95,7 +95,10 @@ return {
             cmd = {
               "clangd",
               -- Add the --query-driver flag followed by the path to your compiler
+              -- windows
               "--query-driver=D:/Arm_ToolChain/arm-gnu-toolchain/bin/arm-none-eabi-gcc.exe", -- <--- *** MODIFY THIS LINE ***
+              -- linux
+              -- "--query-driver=D:/Arm_ToolChain/arm-gnu-toolchain/bin/arm-none-eabi-gcc.exe", -- <--- *** MODIFY THIS LINE ***
 
               -- Example using GCC:
               -- "--query-driver=/usr/bin/gcc",
