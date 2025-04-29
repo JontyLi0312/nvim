@@ -2,6 +2,13 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function()
+      local sysname = vim.loop.os_uname()
+      local query_driver_path
+      if sysname == "" then
+        query_driver_path = "D:/Arm_ToolChain/arm-gnu-toolchain/bin/arm-none-eabi-gcc.exe"
+      else
+        query_driver_path = ""
+      end
       ---@class PluginLspOpts
       local ret = {
         -- options for vim.diagnostic.config()
@@ -97,8 +104,6 @@ return {
               -- Add the --query-driver flag followed by the path to your compiler
               -- windows
               "--query-driver=D:/Arm_ToolChain/arm-gnu-toolchain/bin/arm-none-eabi-gcc.exe", -- <--- *** MODIFY THIS LINE ***
-              -- linux
-              -- "--query-driver=D:/Arm_ToolChain/arm-gnu-toolchain/bin/arm-none-eabi-gcc.exe", -- <--- *** MODIFY THIS LINE ***
 
               -- Example using GCC:
               -- "--query-driver=/usr/bin/gcc",
