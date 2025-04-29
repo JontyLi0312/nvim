@@ -30,7 +30,7 @@ return {
       -- Overseer
       {
         "<leader>ot",
-        ":OverseerToogle<CR>",
+        ":OverseerToggle<CR>",
       },
       -- Top Pickers & Explorer
       {
