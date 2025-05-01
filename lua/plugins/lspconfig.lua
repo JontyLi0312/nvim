@@ -2,13 +2,8 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function()
-      local sysname = vim.loop.os_uname()
-      local query_driver_path
-      if sysname == "" then
-        query_driver_path = "D:/Arm_ToolChain/arm-gnu-toolchain/bin/arm-none-eabi-gcc.exe"
-      else
-        query_driver_path = ""
-      end
+      -- 这个函数现在只负责返回最终的配置表
+
       ---@class PluginLspOpts
       local ret = {
         -- options for vim.diagnostic.config()
@@ -98,29 +93,37 @@ return {
             },
           },
           clangd = {
-            -- Pass command line arguments to clangd
-            cmd = {
-              "clangd",
-              -- Add the --query-driver flag followed by the path to your compiler
-              -- windows
-              "--query-driver=D:/Arm_ToolChain/arm-gnu-toolchain/bin/arm-none-eabi-gcc.exe", -- <--- *** MODIFY THIS LINE ***
+            -- 将 OS 检测和命令构建逻辑移到这里
+            cmd = (function()
+              -- OS config
+              local system = vim.loop.os_uname().sysname
+              local query_driver_path
+              if system == "Windows_NT" then
+                query_driver_path = "D:/Arm_ToolChain/arm-gnu-toolchain/bin/arm-none-eabi-gcc.exe"
+                print("Detected Windows")
+              elseif system == "Linux" then
+                query_driver_path = ""
+                print("Detected Linux.")
+              elseif system == "Darwin" then
+                query_driver_path = ""
+                print("Detected MacOS.")
+              else
+                query_driver_path = nil
+                print("Unsupported OS")
+              end
 
-              -- Example using GCC:
-              -- "--query-driver=/usr/bin/gcc",
-
-              -- Example using G++:
-              -- "--query-driver=/usr/bin/g++",
-
-              -- Example using Clang from Xcode on macOS:
-              -- "--query-driver=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
-
-              -- Example using a glob pattern to find gcc or g++ in /usr/bin:
-              -- "--query-driver=/usr/bin/g*",
-
-              -- You can add other clangd flags here too if needed, e.g.:
-              -- "--log=verbose",
-              -- "--pch-storage=memory",
-            },
+              -- 动态准备 clangd 命令表
+              local clangd_cmd_table = { "clangd" }
+              if query_driver_path and query_driver_path ~= "" then
+                local query_driver_arg = "--query-driver=" .. query_driver_path
+                table.insert(clangd_cmd_table, query_driver_arg)
+                print("Final clangd command: " .. table.concat(clangd_cmd_table, " "))
+              else
+                print("Warning: No specific query driver path provided for clangd for this OS.")
+              end
+              return clangd_cmd_table
+            end)(),
+            filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
           },
         },
         -- you can do any additional lsp server setup here
