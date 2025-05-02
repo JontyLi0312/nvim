@@ -92,39 +92,7 @@ return {
               },
             },
           },
-          clangd = {
-            -- 将 OS 检测和命令构建逻辑移到这里
-            cmd = (function()
-              -- OS config
-              local system = vim.loop.os_uname().sysname
-              local query_driver_path
-              if system == "Windows_NT" then
-                query_driver_path = "D:/Arm_ToolChain/arm-gnu-toolchain/bin/arm-none-eabi-gcc.exe"
-                print("Detected Windows")
-              elseif system == "Linux" then
-                query_driver_path = ""
-                print("Detected Linux.")
-              elseif system == "Darwin" then
-                query_driver_path = ""
-                print("Detected MacOS.")
-              else
-                query_driver_path = nil
-                print("Unsupported OS")
-              end
-
-              -- 动态准备 clangd 命令表
-              local clangd_cmd_table = { "clangd" }
-              if query_driver_path and query_driver_path ~= "" then
-                local query_driver_arg = "--query-driver=" .. query_driver_path
-                table.insert(clangd_cmd_table, query_driver_arg)
-                print("Final clangd command: " .. table.concat(clangd_cmd_table, " "))
-              else
-                print("Warning: No specific query driver path provided for clangd for this OS.")
-              end
-              return clangd_cmd_table
-            end)(),
-            filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
-          },
+          clangd = {},
         },
         -- you can do any additional lsp server setup here
         -- return true if you don't want this server to be setup with lspconfig
