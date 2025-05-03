@@ -1,19 +1,19 @@
 return {
-  name = "Flash STM32H7 pyocd",
+  name = "pyocd stm32h743iit6",
   builder = function()
     -- 注意：这里的路径是相对于 Neovim 的工作目录 (通常是项目根目录)
     -- 确保 interface/, target/ 和 build/STM32H743IIT6.elf 路径正确
-    local elf_path = "./build/STM32H743IIT6.elf" -- 相对于项目根目录
+    local elf_path = "build/STM32H743IIT6.elf" -- 相对于项目根目录
     local target = "stm32h743iitx" -- 相对于项目根目录
 
     return {
       cmd = { "pyocd" },
       args = {
         "flash",
-        "-t",
-        target,
         "--erase",
         "chip",
+        "--target",
+        target,
         elf_path,
       },
       -- 解析输出并在 quickfix 窗口中显示错误/警告，但不自动打开 quickfix

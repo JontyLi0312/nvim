@@ -1,5 +1,5 @@
 return {
-  name = "Flash STM32H7 openocd",
+  name = "openocd stm32h7",
   builder = function()
     -- 注意：这里的路径是相对于 Neovim 的工作目录 (通常是项目根目录)
     -- 确保 interface/, target/ 和 build/STM32H743IIT6.elf 路径正确
